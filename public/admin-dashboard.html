@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.10/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #f3f4f6; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Load AdminDashboard component -->
+    <script type="text/babel" src="components/AdminDashboard.jsx"></script>
+    <script type="text/babel">
+        // Check if user is logged in and is an admin
+        if (!localStorage.getItem('token') || localStorage.getItem('isAdmin') !== 'true') {
+            // Redirect to admin auth page if not logged in as admin
+            window.location.href = '/admin-auth.html';
+        } else {
+            // Render dashboard if authorized
+            const root = ReactDOM.createRoot(document.getElementById('root'));
+            root.render(React.createElement(window.AdminDashboard));
+        }
+    </script>
+</body>
+</html>

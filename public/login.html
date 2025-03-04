@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Portal</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-hover: #60a5fa;
+            --text-color: #f3f4f6;
+            --bg-color: #1f2937;
+            --card-bg: #111827;
+            --input-border: #374151;
+            --error-color: #ef4444;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --secondary-text: #9ca3af;
+            --logo-color: #60a5fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--logo-color);
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.75rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--secondary-text);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: -0.5rem;
+            left: 0.75rem;
+            background-color: var(--card-bg);
+            padding: 0 0.25rem;
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+            font-weight: 500;
+        }
+
+        input {
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            width: 100%;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        p {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--secondary-text);
+            font-size: 0.95rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        .form-container {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: -0.5rem;
+        }
+
+        .remember-me input {
+            width: auto;
+        }
+
+        .divider {
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid var(--input-border);
+        }
+
+        .divider span {
+            padding: 0 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <span class="logo-icon">👨‍🏫</span>
+            <span>Mentor</span>
+        </div>
+        <h1>Welcome back</h1>
+        <p class="subtitle">Sign in to continue to your dashboard</p>
+        
+        <div id="loginForm" class="form-container active">
+            <form id="loginFormElement">
+                <div class="input-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+                <button type="submit">Log In</button>
+            </form>
+            <div id="loginError" class="error-message"></div>
+            
+            <div class="divider"><span>OR</span></div>
+            
+            <p>Don't have an account? <a href="#" onclick="toggleForms(event)">Create Account</a></p>
+        </div>
+
+        <div id="signupForm" class="form-container">
+            <form id="signupFormElement">
+                <div class="input-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit">Create Account</button>
+            </form>
+            <div id="signupError" class="error-message"></div>
+            
+            <div class="divider"><span>OR</span></div>
+            
+            <p>Already have an account? <a href="#" onclick="toggleForms(event)">Log In</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Form Toggle
+        function toggleForms(event) {
+            event.preventDefault();
+            document.getElementById('loginForm').classList.toggle('active');
+            document.getElementById('signupForm').classList.toggle('active');
+            
+            // Clear error messages
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('signupError').textContent = '';
+            
+            // Reset forms
+            document.getElementById('loginFormElement').reset();
+            document.getElementById('signupFormElement').reset();
+        }
+
+        // Login Form Submission
+        document.getElementById('loginFormElement').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById('loginEmail');
+            const passwordInput = document.getElementById('loginPassword');
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorDiv = document.getElementById('loginError');
+
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: emailInput.value,
+                        password: passwordInput.value,
+                        rememberMe: rememberMe
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('mentorToken', data.token);
+                    window.location.href = '/dashboard.html';
+                } else {
+                    errorDiv.textContent = data.message || 'Invalid email or password';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorDiv.textContent = 'Connection error. Please try again later.';
+            }
+        });
+
+        // Signup Form Submission
+        document.getElementById('signupFormElement').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('signupName');
+            const emailInput = document.getElementById('signupEmail');
+            const passwordInput = document.getElementById('signupPassword');
+            const errorDiv = document.getElementById('signupError');
+
+            try {
+                const response = await fetch('/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: nameInput.value,
+                        email: emailInput.value,
+                        password: passwordInput.value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    toggleForms(event);
+                    document.getElementById('loginEmail').value = emailInput.value;
+                    
+                    // Show success message
+                    const loginError = document.getElementById('loginError');
+                    loginError.style.color = 'var(--primary-color)';
+                    loginError.textContent = 'Account created successfully! Please log in.';
+                } else {
+                    errorDiv.textContent = data.message || 'Signup failed';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorDiv.textContent = 'Connection error. Please try again later.';
+            }
+        });
+    </script>
+</body>
+</html>

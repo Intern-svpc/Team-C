@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Session Videos</title>
+  <style>
+    :root {
+      --primary-color: #3b82f6;
+      --primary-hover: #2563eb;
+      --secondary-color: #6b7280;
+      --secondary-hover: #4b5563;
+      --success-color: #059669;
+      --error-color: #dc2626;
+      --text-color: #1f2937;
+      --text-secondary: #4b5563;
+      --bg-color: #f3f4f6;
+      --card-bg: #ffffff;
+      --border-color: #d1d5db;
+      --shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      --card-radius: 8px;
+      --transition: all 0.3s ease;
+    }
+
+    [data-theme="dark"] {
+      --primary-color: #4f46e5;
+      --primary-hover: #4338ca;
+      --secondary-color: #6b7280;
+      --secondary-hover: #9ca3af;
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --text-color: #f9fafb;
+      --text-secondary: #d1d5db;
+      --bg-color: #111827;
+      --card-bg: #1f2937;
+      --border-color: #374151;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: var(--transition);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: var(--text-color);
+    }
+
+    fieldset {
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: var(--transition);
+    }
+
+    legend {
+      font-weight: 600;
+      padding: 0 0.5rem;
+      color: var(--text-color);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      transition: var(--transition);
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    input[type="file"] {
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: var(--secondary-color);
+      color: white;
+      cursor: pointer;
+      margin-right: 1rem;
+      transition: var(--transition);
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      background-color: var(--secondary-hover);
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.875rem;
+    }
+
+    .upload-controls {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .upload-controls button {
+      flex: 1;
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .upload-controls button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .upload-status {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .success {
+      color: var(--success-color);
+    }
+    
+    .error {
+      color: var(--error-color);
+    }
+
+    #uploadAllBtn {
+      width: 100%;
+      margin-bottom: 1.5rem;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    #uploadAllBtn:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .back-button {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .back-button:hover {
+      background-color: var(--secondary-hover);
+    }
+
+    .nav-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .theme-toggle-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      font-size: 1.25rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      background-color: var(--border-color);
+      transition: var(--transition);
+    }
+
+    .progress-container {
+      width: 100%;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      background-color: var(--border-color);
+      border-radius: 4px;
+      height: 8px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background-color: var(--primary-color);
+      transition: width 0.3s;
+    }
+
+    input:disabled, button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 1.5rem;
+      }
+      
+      fieldset {
+        padding: 1rem;
+      }
+      
+      .upload-controls {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-actions">
+      <h1>Upload Session Videos</h1>
+      <div class="theme-toggle">
+        <button id="themeToggle" class="theme-toggle-btn" title="Toggle dark/light mode">
+          🌙
+        </button>
+      </div>
+    </div>
+
+    <form id="uploadForm" action="/upload-videos" method="POST" enctype="multipart/form-data">
+      <div id="sessionsContainer"></div>
+      <button type="button" id="uploadAllBtn">Upload All Videos</button>
+    </form>
+
+    <!-- Go Back Button -->
+    <button onclick="goBack()" class="back-button">Go Back</button>
+  </div>
+
+  <script>
+    // Theme toggling functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+    
+    // Check for saved theme preference or default to 'light'
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    htmlElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      htmlElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+    
+    function updateThemeIcon(theme) {
+      themeToggle.innerHTML = theme === 'light' ? '🌙' : '☀️';
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get('sessionId');
+      const sessionCount = parseInt(urlParams.get('sessions'));
+      const sessionsContainer = document.getElementById('sessionsContainer');
+
+      if (!sessionId || isNaN(sessionCount)) {
+        sessionsContainer.innerHTML = '<p class="error">Invalid session parameters. Please go back and try again.</p>';
+        return;
+      }
+
+      for (let i = 0; i < sessionCount; i++) {
+        const fieldset = document.createElement('fieldset');
+        fieldset.innerHTML = `
+          <legend>Session ${i + 1}</legend>
+          <label for="sessionTitle${i}">Session Title:</label>
+          <input type="text" id="sessionTitle${i}" name="sessionTitles" placeholder="Enter a descriptive title for this session" required>
+          
+          <label for="sessionVideo${i}">Upload Video:</label>
+          <input type="file" id="sessionVideo${i}" name="sessionVideos" accept="video/*" required>
+          
+          <div class="progress-container" id="progressContainer${i}">
+            <div class="progress-bar" id="progressBar${i}"></div>
+          </div>
+          
+          <div class="upload-controls">
+            <button type="button" id="uploadButton${i}" onclick="uploadSingleSession(${i})">Upload Session ${i + 1}</button>
+          </div>
+          
+          <div id="uploadStatus${i}" class="upload-status"></div>
+        `;
+        sessionsContainer.appendChild(fieldset);
+      }
+
+      const sessionIdInput = document.createElement('input');
+      sessionIdInput.type = 'hidden';
+      sessionIdInput.name = 'sessionId';
+      sessionIdInput.value = sessionId;
+      sessionsContainer.appendChild(sessionIdInput);
+
+      document.getElementById('uploadAllBtn').addEventListener('click', uploadAllSessions);
+    };
+
+    function getAuthToken() {
+      return localStorage.getItem('mentorToken');
+    }
+
+    function simulateProgress(progressBar, statusDiv, duration = 2000) {
+      let width = 0;
+      const interval = setInterval(() => {
+        if (width >= 90) {
+          clearInterval(interval);
+        } else {
+          width += Math.random() * 5;
+          progressBar.style.width = `${Math.min(width, 90)}%`;
+        }
+      }, duration / 20);
+      
+      return interval;
+    }
+
+    async function uploadSingleSession(index) {
+      const formData = new FormData();
+      const sessionId = document.querySelector('input[name="sessionId"]').value;
+      const titleInput = document.getElementById(`sessionTitle${index}`);
+      const videoInput = document.getElementById(`sessionVideo${index}`);
+      const statusDiv = document.getElementById(`uploadStatus${index}`);
+      const uploadButton = document.getElementById(`uploadButton${index}`);
+      const progressContainer = document.getElementById(`progressContainer${index}`);
+      const progressBar = document.getElementById(`progressBar${index}`);
+      const token = localStorage.getItem('mentorToken');
+
+      if (!token) {
+        console.error("No token found! Redirecting to login...");
+        window.location.href = '/login.html';
+        return;
+      }
+
+      if (!titleInput.value || !videoInput.files[0]) {
+        statusDiv.textContent = 'Please fill in all fields';
+        statusDiv.className = 'upload-status error';
+        return;
+      }
+
+      formData.append('sessionId', sessionId);
+      formData.append('sessionTitles', titleInput.value);
+      formData.append('sessionVideos', videoInput.files[0]);
+
+      try {
+        // Show progress and update UI
+        statusDiv.textContent = 'Uploading...';
+        statusDiv.className = 'upload-status';
+        uploadButton.disabled = true;
+        progressContainer.style.display = 'block';
+        progressBar.style.width = '0%';
+        
+        // Simulate progress while uploading
+        const progressInterval = simulateProgress(progressBar, statusDiv);
+        
+        const response = await fetch('/upload-videos', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+
+        const result = await response.json();
+
+        // Clear progress simulation
+        clearInterval(progressInterval);
+        
+        if (!response.ok) {
+          throw new Error(result.message || 'Upload failed');
+        }
+
+        // Update UI with success
+        progressBar.style.width = '100%';
+        statusDiv.textContent = 'Upload successful!';
+        statusDiv.className = 'upload-status success';
+        titleInput.disabled = true;
+        videoInput.disabled = true;
+        uploadButton.disabled = true;
+      } catch (error) {
+        console.error('Upload Error:', error);
+        progressContainer.style.display = 'none';
+        statusDiv.textContent = 'Upload failed. Please try again.';
+        statusDiv.className = 'upload-status error';
+        uploadButton.disabled = false;
+      }
+    }
+
+    async function uploadAllSessions() {
+      const sessionCount = document.querySelectorAll('fieldset').length;
+      const uploadAllBtn = document.getElementById('uploadAllBtn');
+      let allValid = true;
+
+      for (let i = 0; i < sessionCount; i++) {
+        const titleInput = document.getElementById(`sessionTitle${i}`);
+        const videoInput = document.getElementById(`sessionVideo${i}`);
+        const statusDiv = document.getElementById(`uploadStatus${i}`);
+
+        if (!titleInput.value || !videoInput.files[0]) {
+          statusDiv.textContent = 'Please fill in all fields for this session';
+          statusDiv.className = 'upload-status error';
+          allValid = false;
+        }
+      }
+
+      if (!allValid) return;
+
+      uploadAllBtn.disabled = true;
+      uploadAllBtn.textContent = 'Uploading All Sessions...';
+
+      for (let i = 0; i < sessionCount; i++) {
+        if (!document.getElementById(`sessionTitle${i}`).disabled) {
+          await uploadSingleSession(i);
+        }
+      }
+
+      uploadAllBtn.textContent = 'All Sessions Uploaded';
+      setTimeout(() => {
+        uploadAllBtn.textContent = 'Upload All Videos';
+        uploadAllBtn.disabled = true;
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <!-- React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base styles */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* System preference dark mode */
+        @media (prefers-color-scheme: dark) {
+            html.auto-dark {
+                color-scheme: dark;
+            }
+            html.auto-dark body {
+                background-color: #111827;
+                color: #f9fafb;
+            }
+        }
+        
+        /* Explicit dark mode */
+        html.dark {
+            color-scheme: dark;
+        }
+        html.dark body {
+            background-color: #111827;
+            color: #f9fafb;
+        }
+        
+        /* Animation and transitions */
+        * {
+            transition-property: background-color, border-color, color, fill, stroke;
+            transition-duration: 200ms;
+        }
+        
+        /* Remove flashing on page load */
+        .no-transition {
+            transition: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- Load your component -->
+    <script src="/components/StudentPortal.jsx"></script>
+    
+    <!-- Initialize the app -->
+    <script>
+        // Apply no-transition class during initial load
+        document.documentElement.classList.add('no-transition');
+        
+        // Check dark mode preference
+        const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedMode = localStorage.getItem('darkMode');
+        
+        // Apply appropriate class based on saved preference or system preference
+        if (savedMode === 'true' || (savedMode === null && prefersDarkMode)) {
+            document.documentElement.classList.add('dark');
+        } else if (savedMode === null) {
+            document.documentElement.classList.add('auto-dark');
+        }
+        
+        // Remove no-transition class after initial dark mode is applied
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.documentElement.classList.remove('no-transition');
+            }, 100);
+        });
+        
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(StudentPortal));
+    </script>
+</body>
+</html>
